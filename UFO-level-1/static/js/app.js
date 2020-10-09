@@ -1,6 +1,8 @@
 // Reference the table body
 let tableBody = d3.select("tbody");
 
+//Assign a variable for the data
+let ufoData = data;
 // console.log(data)
 
 //Populate the table with the data from data.js
@@ -33,7 +35,31 @@ function dataFilter() {
     //Get the value of what was entered
     let dateValue = inputDate.property("value");
 
-    console.log(dateValue);
-    console.log(data);
+    // console.log(dateValue);
+    // console.log(data);
+
+    //Use the date entered to filter the data
+    let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
+
+    
+    // console.log(filteredData);
+
+    //Display only the filtered rows
+    let tbody = d3.select("tbody");
+
+    //Clear the previously displayed data
+    tbody.html("");
+
+    //Populate the table area
+    filteredData.forEach((foundDate) => {
+        console.log(foundDate);
+        let newRow = tbody.append('tr');
+        Object.entries(foundDate).forEach(([key, value]) => {
+            let newCell = newRow.append('td');
+            newCell.text(value);
+        });
+    });
+
+
 
 }

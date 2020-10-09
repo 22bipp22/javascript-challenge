@@ -12,19 +12,28 @@ data.forEach((ufoSighting) => {
         cell.text(value);
     });
 });
-// let tr = document.createElement('TR');
-// tableBody.appendChild(tr);
 
-// tableData.forEach((item) => {
-    
-//     // get the entries for every object in the array
-//     Object.entries(item.forEach(([key, value]) => {
-//         let td = item.createElement('TD');
-//         tr.appendChild(item.createTextNode(key));
-//         tr.appendChild(tr)
-//         td.appendChild(item.createTextNode(value));
-//         td.appendChild(td);
-        
-//         console.log(`Key: ${key} and Value: ${value}`);
-//     }));
-// });
+//Set the button and date field to variables
+let button = d3.select("#filter-btn");
+let form = d3.select("#form");
+
+//Create the event handlers
+button.on("click", dataFilter);
+form.on("submit", dataFilter);
+
+//Function to filter the data if date entered
+function dataFilter() {
+
+    //Prevent the page from refreshing on submit
+    d3.event.preventDefault();
+
+    //Select the html where the date will be entered
+    let inputDate = d3.select("#datetime");
+
+    //Get the value of what was entered
+    let dateValue = inputDate.property("value");
+
+    console.log(dateValue);
+    console.log(data);
+
+}

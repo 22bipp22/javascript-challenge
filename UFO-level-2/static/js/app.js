@@ -31,18 +31,28 @@ function dataFilter() {
 
     //Select the html where the date will be entered
     let inputDate = d3.select("#datetime");
+    let inputCity = d3.select("#city");
+    let inputState = d3.select("#state");
+    let inputCountry = d3.select("#country");
+    let inputShape = d3.select("#shape");
 
     //Get the value of what was entered
     let dateValue = inputDate.property("value");
+    let cityValue = inputCity.property("value");
+    let stateValue = inputState.property("value");
+    let countryValue = inputCountry.property("value");
+    let shapeValue = inputShape.property("value");
 
     // console.log(dateValue);
     // console.log(data);
 
     //Use the date entered to filter the data
     let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
-
+    // && sighting.city === cityValue);
+        
     
-    // console.log(filteredData);
+    
+    console.log(filteredData);
 
     //Display only the filtered rows
     let tbody = d3.select("tbody");

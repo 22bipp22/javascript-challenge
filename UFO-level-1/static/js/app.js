@@ -23,28 +23,11 @@ let form = d3.select("#form");
 button.on("click", dataFilter);
 form.on("submit", dataFilter);
 
-//Function to filter the data if date entered
-function dataFilter() {
+function dataFilter() {   
 
-    //Prevent the page from refreshing on submit
-    d3.event.preventDefault();
+    //Call the function to return only the selected rows
+    let filteredData = ufoData.filter(selectedData);
 
-    //Select the html where the date will be entered
-    let inputDate = d3.select("#datetime");
-
-    //Get the value of what was entered
-    let dateValue = inputDate.property("value");
-
-    // console.log(dateValue);
-    // console.log(data);
-
-    //Use the date entered to filter the data
-    let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
-
-    
-    // console.log(filteredData);
-
-    //Display only the filtered rows
     let tbody = d3.select("tbody");
 
     //Clear the previously displayed data
@@ -59,5 +42,44 @@ function dataFilter() {
             newCell.text(value);
         });
     });
+    
+};
 
-}
+//Function to filter the data if date entered
+function selectedData(item) {
+
+    //Prevent the page from refreshing on submit
+    d3.event.preventDefault();
+    //Select the html where the date will be entered
+    let inputField = d3.event.target.id;
+    let valueInput = d3.event.target.value;
+    console.log(inputField, valueInput);
+
+
+
+    // let inputDate = d3.select("#datetime");
+
+    //Get the value of what was entered
+    // let dateValue = inputDate.property("value");
+
+    return item.inputField === valueInput;
+    
+};
+    // //Select the html where the date will be entered
+    // let inputDate = d3.select("#datetime");
+
+    // //Get the value of what was entered
+    // let dateValue = inputDate.property("value");
+
+    // console.log(dateValue);
+    // console.log(data);
+
+    //Use the date entered to filter the data
+    
+
+    
+    // console.log(filteredData);
+
+    //Display only the filtered rows
+    
+

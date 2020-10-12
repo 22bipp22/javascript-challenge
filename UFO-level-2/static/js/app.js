@@ -26,7 +26,6 @@ form.on("submit", dataFilter);
 // let text = d3.selectAll(".form-control")
 // text.on("change", dataFilter);
     
-
 //Function to filter the data if date entered
 function dataFilter() {
 
@@ -50,7 +49,8 @@ function dataFilter() {
     console.log(dateValue);
     console.log(cityValue);
 
-    let filteredData = ufoData.filter(sighting => 
+    let filteredData = ufoData.filter(function sighting()) 
+    
         if (dateValue) {
             sighting.datetime === dateValue
         };

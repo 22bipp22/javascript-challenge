@@ -23,7 +23,7 @@ let form = d3.select("#form");
 button.on("click", dataFilter);
 form.on("submit", dataFilter);
 
-d3.selectAll("button").on("click", function() {
+d3.selectAll("li").on("submit", function() {
     console.log(this);
 })
 

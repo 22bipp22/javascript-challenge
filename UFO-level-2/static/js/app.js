@@ -23,6 +23,10 @@ let form = d3.select("#form");
 button.on("click", dataFilter);
 form.on("submit", dataFilter);
 
+d3.selectAll("button").on("click", function() {
+    console.log(this);
+})
+
 //Function to filter the data if date entered
 function dataFilter() {
 

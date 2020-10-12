@@ -47,12 +47,19 @@ function dataFilter() {
     let countryValue = inputCountry.property("value");
     let shapeValue = inputShape.property("value");
 
+    console.log(dateValue);
+    console.log(cityValue);
+
     let filteredData = ufoData.filter(sighting => 
-        sighting.datetime === dateValue 
-        && sighting.city === cityValue
-        && sighting.state === stateValue
-        && sighting.country === countryValue
-        && sighting.shape === shapeValue
+        if (dateValue) {
+            sighting.datetime === dateValue
+        };
+        
+         
+        // && sighting.city === cityValue
+        // && sighting.state === stateValue
+        // && sighting.country === countryValue
+        // && sighting.shape === shapeValue
         );
     console.log(filteredData);
     populateTable(filteredData);  

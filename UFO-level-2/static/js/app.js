@@ -47,6 +47,15 @@ function dataFilter() {
     let countryValue = inputCountry.property("value");
     let shapeValue = inputShape.property("value");
 
+    let filteredData = ufoData.filter(sighting => 
+        sighting.datetime === dateValue 
+        && sighting.city === cityValue
+        && sighting.state === stateValue
+        && sighting.country === countryValue
+        && sighting.shape === shapeValue
+        );
+    console.log(filteredData);
+    populateTable(filteredData);  
     // console.log(dateValue);
     // console.log(data);
 
@@ -54,26 +63,36 @@ function dataFilter() {
     // let valueInput = d3.event.target.value;
     // console.log(inputField, valueInput);
 
-    //Use the date entered to filter the data
-    if (dateValue) {
-        let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
-        console.log(filteredData);
+    //Filter the data -- ALL input values entered
+    // if (dateValue && cityValue && stateValue && countryValue && shapeValue) 
+    //  {
+    //     let filteredData = ufoData.filter(sighting => 
+    //         sighting.datetime === dateValue 
+    //         && sighting.city === cityValue
+    //         && sighting.state === stateValue
+    //         && sighting.country === countryValue
+    //         && sighting.shape === shapeValue
+    //         );
+    //     console.log(filteredData);
+    //     populateTable(filteredData);    
+    // };
+
+    function populateTable(filteredData) {
     //Display only the filtered rows
         let tbody = d3.select("tbody");
 
-    //Clear the previously displayed data
+        //Clear the previously displayed data
         tbody.html("");
 
-    //Populate the table area
-        filteredData.forEach((foundDate) => {
-            console.log(foundDate);
+        //Populate the table area
+        filteredData.forEach((foundData) => {
+            console.log(foundData);
             let newRow = tbody.append('tr');
-            Object.entries(foundDate).forEach(([key, value]) => {
+            Object.entries(foundData).forEach(([key, value]) => {
                 let newCell = newRow.append('td');
                 newCell.text(value);
             });
         });
-
     };
     
     // // && sighting.city === cityValue);

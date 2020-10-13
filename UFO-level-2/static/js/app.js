@@ -57,10 +57,10 @@ function dataFilter() {
     //Determine which fields had values entered and save them to an array. 
     let filterKeys = [];
     let filterValues = [];
-    let newData = " ";
+    let filteredData = " ";
 
     if (dateValue) {
-        let newData = ufoData.filter(sighting => sighting.datetime === dateValue);
+        let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
         console.log(newData);
         
     };

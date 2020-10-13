@@ -53,17 +53,56 @@ function dataFilter() {
     let countryValue = inputCountry.property("value");
     let shapeValue = inputShape.property("value");
     
-    let filterArray = [];
-
+    
+    //Determine which fields had values entered and save them to an array. 
+    let filterKeys = [];
+    let filterValues = [];
 
     if (dateValue) {
-        filterArray.push(["datetime", dateValue]);
-        console.log(filterArray);
+        filterKeys.push("datetime");
+        filterValues.push(dateValue);
+        
+    };
+
+    if (cityValue) {
+        filterKeys.push("city");
+        filterValues.push(cityValue);
+        
+    };
+
+    if (stateValue) {
+        filterKeys.push("state");
+        filterValues.push(stateValue);
+        
+    };
+
+    if (countryValue) {
+        filterKeys.push("country");
+        filterValues.push(countryValue);
+        
+    };
+
+    if (shapeValue) {
+        filterKeys.push("shape");
+        filterValues.push(shapeValue);
+        
     };
     
-    
+
+    console.log(`keys ${filterKeys}, values ${filterValues}`);
     //Use the date entered to filter the data
-    let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
+    
+    let students = ['Leo', 'Adela', 'Juliet', 'Vanessa', 'Gina'];
+
+    //loop through the filter keys and filter the data. 
+    for (let x = 0; x < filterKeys.length; x ++) {
+        let searchItem = filterKeys[x];
+        let filteredData = ufoData.filter(sighting => sighting.searchItem === filterValues[x]);
+        console.log(searchItem);
+        console.log(filteredData);
+}
+
+    //let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
 
     
     // console.log(filteredData);
@@ -76,7 +115,7 @@ function dataFilter() {
 
     //Populate the table area
     filteredData.forEach((foundDate) => {
-        console.log(foundDate);
+        // console.log(foundDate);
         let newRow = tbody.append('tr');
         Object.entries(foundDate).forEach(([key, value]) => {
             let newCell = newRow.append('td');

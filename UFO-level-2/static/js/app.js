@@ -23,14 +23,21 @@ let form = d3.select("#form");
 button.on("click", dataFilter);
 form.on("submit", dataFilter);
 
-// let text = d3.selectAll(".form-control")
-// text.on("change", dataFilter);
-    
 //Function to filter the data if date entered
 function dataFilter() {
 
     //Prevent the page from refreshing on submit
     d3.event.preventDefault();
+
+    d3.selectAll("li").on("change", function() {
+        // you can select the element just like any other selection
+        let valueInput = d3.select(this);
+        let valueInputText = valueInput.text();
+        console.log(valueInputText);
+      });
+    //Select the html where the date will be entered
+    // let valueInput = d3.event.target.value;
+    // console.log(valueInput);
 
     //Select the html where the date will be entered
     let inputDate = d3.select("#datetime");
@@ -45,69 +52,36 @@ function dataFilter() {
     let stateValue = inputState.property("value");
     let countryValue = inputCountry.property("value");
     let shapeValue = inputShape.property("value");
-
-    console.log(dateValue);
-    console.log(cityValue);
-
-    let filteredData = ufoData.filter(function sighting()) 
     
-        if (dateValue) {
-            sighting.datetime === dateValue
-        };
-        
-         
-        // && sighting.city === cityValue
-        // && sighting.state === stateValue
-        // && sighting.country === countryValue
-        // && sighting.shape === shapeValue
-        );
-    console.log(filteredData);
-    populateTable(filteredData);  
-    // console.log(dateValue);
-    // console.log(data);
+    let filterArray = [];
 
-    // let inputField = d3.event.target.id;
-    // let valueInput = d3.event.target.value;
-    // console.log(inputField, valueInput);
 
-    //Filter the data -- ALL input values entered
-    // if (dateValue && cityValue && stateValue && countryValue && shapeValue) 
-    //  {
-    //     let filteredData = ufoData.filter(sighting => 
-    //         sighting.datetime === dateValue 
-    //         && sighting.city === cityValue
-    //         && sighting.state === stateValue
-    //         && sighting.country === countryValue
-    //         && sighting.shape === shapeValue
-    //         );
-    //     console.log(filteredData);
-    //     populateTable(filteredData);    
-    // };
-
-    function populateTable(filteredData) {
-    //Display only the filtered rows
-        let tbody = d3.select("tbody");
-
-        //Clear the previously displayed data
-        tbody.html("");
-
-        //Populate the table area
-        filteredData.forEach((foundData) => {
-            console.log(foundData);
-            let newRow = tbody.append('tr');
-            Object.entries(foundData).forEach(([key, value]) => {
-                let newCell = newRow.append('td');
-                newCell.text(value);
-            });
-        });
+    if (dateValue) {
+        filterArray.push(["datetime", dateValue]);
+        console.log(filterArray);
     };
     
-    // // && sighting.city === cityValue);
-        
     
-    
-    
+    //Use the date entered to filter the data
+    let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
 
     
+    // console.log(filteredData);
+
+    //Display only the filtered rows
+    let tbody = d3.select("tbody");
+
+    //Clear the previously displayed data
+    tbody.html("");
+
+    //Populate the table area
+    filteredData.forEach((foundDate) => {
+        console.log(foundDate);
+        let newRow = tbody.append('tr');
+        Object.entries(foundDate).forEach(([key, value]) => {
+            let newCell = newRow.append('td');
+            newCell.text(value);
+        });
+    });
 
 }

@@ -1,5 +1,5 @@
 // Reference the table body
-let tableBody = d3.select("tbody");
+let tbody = d3.select("tbody");
 
 //Assign a variable for the data
 let ufoData = data;
@@ -8,20 +8,60 @@ let ufoData = data;
 //Populate the table with the data from data.js
 data.forEach((ufoSighting) => {
     // console.log(ufoSighting);
-    let row = tableBody.append('tr');
+    let row = tbody.append('tr');
     Object.entries(ufoSighting).forEach(([key, value]) => {
         let cell = row.append('td');
         cell.text(value);
     });
 });
 
+//Clear the search data and re-display the table with the data from data.js
+function init() { 
+    //Clear the previously displayed data
+    tbody.html("");
+
+    //Repopulate the screen with all data
+    data.forEach((ufoSighting) => {
+        // console.log(ufoSighting);
+        let row = tbody.append('tr');
+        Object.entries(ufoSighting).forEach(([key, value]) => {
+            let cell = row.append('td');
+            cell.text(value);
+        });
+    });
+
+    // Restore search values to placeholders
+    let initDate = d3.select('#datetime');    
+    initDate.property("value", initDate.attr("placeholder"));
+
+    let initCity = d3.selectAll('#city');
+    initCity.property("value", initCity.attr("placeholder"));
+    
+    let initState = d3.selectAll('#state');
+    initState.property("value", initState.attr("placeholder"));
+
+    let initCountry = d3.selectAll('#country');
+    initCountry.property("value", initCountry.attr("placeholder"));
+
+    let initShape= d3.selectAll('#shape');
+    initShape.property("value", initShape.attr("placeholder"));
+};
+
+//filter the data based on input and populate the screen. 
+function filterItems(items, searchVal) {
+    return items.filter((item) => Object.values(item).includes(searchVal));
+    
+};
+
+
+
 //Set the button and date field to variables
 let button = d3.select("#filter-btn");
-let form = d3.select(".filter");
+let form = d3.selectAll(".form-control");
 
 
 //Create the event handlers
-button.on("click", dataFilter);
+button.on("click", init);
 form.on("change", dataFilter);
 
 // Function to filter the data if date entered
@@ -32,188 +72,38 @@ function dataFilter() {
     //Prevent the page from refreshing on submit
     d3.event.preventDefault();
 
-    variable = d3.select(this);
-    console.log(variable);
-
-    let valueInput = d3.select(this);
-    let valueInputText = valueInput.text();
-    console.log(valueInput);
     
-    //Select the html where the date will be entered
-    // let valueInput = d3.event.target.value;
-    // console.log(valueInput);
+    //Grab the event and set filter values. 
+    let filterValues = [{}];
+    let filteredData = [{}];
     
-    //Select the html where the date will be entered
-    let inputDate = d3.select("#datetime");
-    let inputCity = d3.select("#city");
-    let inputState = d3.select("#state");
-    let inputCountry = d3.select("#country");
-    let inputShape = d3.select("#shape");
-
-    //Get the value of what was entered
-    let dateValue = inputDate.property("value");
-    let cityValue = inputCity.property("value");
-    let stateValue = inputState.property("value");
-    let countryValue = inputCountry.property("value");
-    let shapeValue = inputShape.property("value");
-    
-    
-    //Determine which fields had values entered and save them to an array. 
-    let filterKeys = [];
-    let filterValues = [];
-    // let filteredData = " ";
-
-    if (dateValue) {
-        let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
-        
-        
+    let variable = d3.select(this);
+    filterValues = {
+        filterKey: variable.attr("id"),
+        filterValue: variable.property("value")
     };
+    
+    console.log(filterValues);
+    console.log(`key = ${filterValues.filterKey}` );
+    console.log(`value = ${filterValues.filterValue}`);
+    let searchVal = filterValues.filterValue;
 
-    // if (cityValue) {
-    //     let newData = newData.filter(sighting => sighting.city === cityValue);
-    //     console.log(newData);
-        
-    // };
-
-    // if (stateValue) {
-    //     filterKeys.push("state");
-    //     filterValues.push(stateValue);
-        
-    // };
-
-    // if (countryValue) {
-    //     filterKeys.push("country");
-    //     filterValues.push(countryValue);
-        
-    // };
-
-    // if (shapeValue) {
-    //     filterKeys.push("shape");
-    //     filterValues.push(shapeValue);
-        
-    // };
-
-      // Use the date entered to filter the data
-    // let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
-
-    // // let filteredData = newData
-    // //   console.log(filteredData);
+    filteredData = filterItems(ufoData, searchVal); 
+    console.log(filteredData);
   
     //   // Display only the filtered rows
+    //let tbody = d3.select("tbody");
 
-    //   //@@@@@@@Works - trying boilerplate ***Make this a function****
-    // let tbody = d3.select("tbody");
+    //Clear the previously displayed data
+    tbody.html("");
 
-    // //Clear the previously displayed data
-    // tbody.html("");
-
-    // //Populate the table area
-    // filteredData.forEach((foundDate) => {
-    //     console.log(foundDate);
-    //     let newRow = tbody.append('tr');
-    //     Object.entries(foundDate).forEach(([key, value]) => {
-    //         let newCell = newRow.append('td');
-    //         newCell.text(value);
-    //     });
-    // });
+    //Populate the table area
+    filteredData.forEach((foundDate) => {
+        console.log(foundDate);
+        let newRow = tbody.append('tr');
+        Object.entries(foundDate).forEach(([key, value]) => {
+            let newCell = newRow.append('td');
+            newCell.text(value);
+        });
+    });
 };  
-    // console.log(`keys ${filterKeys}, values ${filterValues}`);
-    // Use the date entered to filter the data
-
-   
-
-//     //loop through the filter keys and filter the data. 
-//     for (let x = 0; x < filterKeys.length; x ++) {
-//         let searchItem = filterKeys[x];
-//         let filteredData = ufoData.filter(ufoData.searchItem === filterValues[x]);
-//         console.log(ufoData.searchItem);
-//         console.log(filteredData);
-// }
-
-    //let filteredData = ufoData.filter(sighting => sighting.datetime === dateValue);
-
-    
-    // console.log(filteredData);
-
-
-// }
-// function letsFilter(item, value) {
-//     let newUfoData = ufoData.filter(sighting => sighting.datetime === value);
-//     console.log(newUfoData);
-// 
-//Boilerplate code I found in stackoverflow
-// let
-//   dateFilter, cityFilter, stateFilter, countryFilter, shapeFilter;
-
-// function updateFilters() {
-//     ufoData.filter(function() {
-//     console.log(this);
-//         let
-//       self = this,
-//       result = true; // not guilty until proven guilty
-//     console.log(`self ${self}`);
-//     if (dateFilter && (dateFilter != 'None')) {
-//       result = result && dateFilter === self.data('datetime');
-//       console.log(`result = ${result}`);
-//     }
-//     if (cityFilter && (cityFilter != 'Any')) {
-//       result = result && cityFilter === self.data('city');
-//     }
-//     if (stateFilter && (stateilter != 'None')) {
-//       result = result && stateFilter === self.data('state');
-//     }
-//     if (countryFilter && (countryFilter != 'None')) {
-//       result = result && countryFilter === self.data('country');
-//     }
-//     if (shapeFilter && (shapeFilter != 'None')) {
-//       result = result && shapeFilter === self.data('shape');
-//     }
-    
-//     return result;
-//   });
-// }
-
-// // Assigned User Dropdown Filter
-// let inputDate = d3.select("#datetime");
-// let inputCity = d3.select("#city");
-// let inputState = d3.select("#state");
-// let inputCountry = d3.select("#country");
-// let inputShape = d3.select("#shape");
-
-// inputDate.on('change', function() {
-//   userFilter = this.value;
-//   updateFilters();
-// });
-
-// // Task Status Dropdown Filter
-// inputCity.on('change', function() {
-//   statusFilter = this.value;
-//   updateFilters();
-// });
-
-// // Task Milestone Dropdown Filter
-// inputState.on('change', function() {
-//   milestoneFilter = this.value;
-//   updateFilters();
-// });
-
-// // Task Priority Dropdown Filter
-// inputCountry.on('change', function() {
-//   priorityFilter = this.value;
-//   updateFilters();
-// });
-
-// // Task Tags Dropdown Filter
-// inputShape.on('change', function() {
-//   tagsFilter = this.value;
-//   updateFilters();
-// });
-
-// button.on("click", updateFilters);
-/*
-future use for a text input filter
-$('#search').on('click', function() {
-    $('.box').hide().filter(function() {
-        return $(this).data('order-number') == $('#search-criteria').val().trim();
-    }).show();
-});*/

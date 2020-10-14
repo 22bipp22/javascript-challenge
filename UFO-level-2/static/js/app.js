@@ -15,7 +15,16 @@ data.forEach((ufoSighting) => {
     });
 });
 
-//Clear the search data and re-display the table with the data from data.js
+//Set the button and date field to variables
+let button = d3.select("#filter-btn");
+let form = d3.selectAll(".form-control");
+
+//Create the event handlers
+button.on("click", init);
+form.on("change", dataFilter);
+
+//Clear the search data and re-display the table with the data from data.js 
+//This will happen when button is clicked.
 function init() { 
     //Clear the previously displayed data
     tbody.html("");
@@ -53,29 +62,15 @@ function filterItems(items, searchVal) {
     
 };
 
-
-
-//Set the button and date field to variables
-let button = d3.select("#filter-btn");
-let form = d3.selectAll(".form-control");
-
-
-//Create the event handlers
-button.on("click", init);
-form.on("change", dataFilter);
-
-// Function to filter the data if date entered
-
-//@@@@@@@Works - trying boilerplate
+// Function to handle  the data if data entered
 function dataFilter() {
 
     //Prevent the page from refreshing on submit
     d3.event.preventDefault();
-
     
     //Grab the event and set filter values. 
-    let filterValues = [{}];
-    let filteredData = [{}];
+    let filterValues = {};
+    let filteredData = {};
     
     let variable = d3.select(this);
     filterValues = {
@@ -83,13 +78,15 @@ function dataFilter() {
         filterValue: variable.property("value")
     };
     
-    console.log(filterValues);
-    console.log(`key = ${filterValues.filterKey}` );
-    console.log(`value = ${filterValues.filterValue}`);
+    // console.log(filterValues);
+    // console.log(`key = ${filterValues.filterKey}` );
+    // console.log(`value = ${filterValues.filterValue}`);
+    
     let searchVal = filterValues.filterValue;
 
     filteredData = filterItems(ufoData, searchVal); 
-    console.log(filteredData);
+    
+    // console.log(filteredData);
   
     //   // Display only the filtered rows
     //let tbody = d3.select("tbody");
@@ -97,7 +94,7 @@ function dataFilter() {
     //Clear the previously displayed data
     tbody.html("");
 
-    //Populate the table area
+    //Populate the table area with the filtered data
     filteredData.forEach((foundDate) => {
         console.log(foundDate);
         let newRow = tbody.append('tr');

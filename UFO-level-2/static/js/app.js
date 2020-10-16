@@ -6,7 +6,7 @@ let ufoData = data;
 // console.log(data)
 
 //Populate the table with the data from data.js
-data.forEach((ufoSighting) => {
+ufoData.forEach((ufoSighting) => {
     // console.log(ufoSighting);
     let row = tbody.append('tr');
     Object.entries(ufoSighting).forEach(([key, value]) => {
@@ -17,20 +17,20 @@ data.forEach((ufoSighting) => {
 
 //Set the button and date field to variables
 let button = d3.select("#filter-btn");
-let form = d3.selectAll(".form-control");
+let form = d3.selectAll(".filter");
 
 //Create the event handlers
-button.on("click", init);
+button.on("click", clearSearches);
 form.on("change", dataFilter);
 
 //Clear the search data and re-display the table with the data from data.js 
 //This will happen when button is clicked.
-function init() { 
+function clearSearches() { 
     //Clear the previously displayed data
     tbody.html("");
 
     //Repopulate the screen with all data
-    data.forEach((ufoSighting) => {
+    ufoData.forEach((ufoSighting) => {
         // console.log(ufoSighting);
         let row = tbody.append('tr');
         Object.entries(ufoSighting).forEach(([key, value]) => {
@@ -41,66 +41,67 @@ function init() {
 
     // Restore search values to placeholders
     let initDate = d3.select('#datetime');    
-    initDate.property("value", initDate.attr("placeholder"));
+    initDate.property("value", "");
 
     let initCity = d3.selectAll('#city');
-    initCity.property("value", initCity.attr("placeholder"));
+    initCity.property("value", "");
     
     let initState = d3.selectAll('#state');
-    initState.property("value", initState.attr("placeholder"));
+    initState.property("value", "");
 
     let initCountry = d3.selectAll('#country');
-    initCountry.property("value", initCountry.attr("placeholder"));
+    initCountry.property("value", "");
 
     let initShape= d3.selectAll('#shape');
-    initShape.property("value", initShape.attr("placeholder"));
-};
+    initShape.property("value", "");
 
-//filter the data based on input and populate the screen. 
-function filterItems(items, searchVal) {
-    return items.filter((item) => Object.values(item).includes(searchVal));
+    ///Clear the previous filters.
+    filterValues = {}
     
 };
+
+
+//Initialize the area to hold the filters
+let filterValues = {};
 
 // Function to handle  the data if data entered
 function dataFilter() {
 
-    //Prevent the page from refreshing on submit
-    d3.event.preventDefault();
-    
     //Grab the event and set filter values. 
-    let filterValues = {};
-    let filteredData = {};
     
-    let variable = d3.select(this);
-    filterValues = {
-        filterKey: variable.attr("id"),
-        filterValue: variable.property("value")
-    };
-    
-    // console.log(filterValues);
-    // console.log(`key = ${filterValues.filterKey}` );
-    // console.log(`value = ${filterValues.filterValue}`);
-    
-    let searchVal = filterValues.filterValue;
+    let variable = d3.select(this).select("input");
+    let filterKey = variable.attr("id");
+    let filterValue = variable.property("value");
 
-    filteredData = filterItems(ufoData, searchVal); 
-    
-    // console.log(filteredData);
-  
-    //   // Display only the filtered rows
-    //let tbody = d3.select("tbody");
+    //If data was entered into the filter field, add it to the filters list
+    if (filterValue) {
+        filterValues[filterKey] = filterValue;
+        // console.log(filterValues);
+    }
+    else {
+        delete filterValues[filterKey];
+    }
 
+    filterItems();    
+   
+};  
+//filter the data based on input and populate the screen. 
+function filterItems() {
+    let filteredData = ufoData
+    
+    Object.entries(filterValues).forEach(([key, value]) => {
+        filteredData = filteredData.filter(item => item[key] === value);
+    });
     //Clear the previously displayed data
     tbody.html("");
 
     //Populate the table area with the filtered data
-    filteredData.forEach((foundDate) => {
-        console.log(foundDate);
+    filteredData.forEach((found) => {
+        // console.log(found);
         let newRow = tbody.append('tr');
-        Object.entries(foundDate).forEach(([key, value]) => {
+        Object.entries(found).forEach(([key, value]) => {
             let newCell = newRow.append('td');
             newCell.text(value);
         });
-    });
-};  
+    });       
+};
